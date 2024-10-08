@@ -396,7 +396,18 @@
                   document.getElementById("input-message").value = ""; // Clear input field
                 }
               });
-
+            // Event listener for "Enter" key press
+            document
+              .getElementById("input-message")
+              .addEventListener("keydown", (event) => {
+                if (event.key === "Enter") {
+                  const inputMessage = event.target.value;
+                  if (inputMessage.trim()) {
+                    sendMessage(inputMessage);
+                    event.target.value = ""; // Clear input field
+                  }
+                }
+              });
             // Fetch conversations when the page loads
             createNewConversation();
           </script>
