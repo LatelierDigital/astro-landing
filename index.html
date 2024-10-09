@@ -130,9 +130,7 @@
               </div>
             </div>
             <div>
-              <div id="typing-indicator" style="color: #0f0221">
-                Michel is typing...
-              </div>
+              <div id="typing-indicator" style="color: #0f0221">...</div>
 
               <div style="display: flex">
                 <input
@@ -254,36 +252,39 @@
                 );
                 const data = await response.json();
 
-                // Hide typing indicator
-                typingIndicator.style.display = "none";
+                // Calculate delay based on response length (5 to 15 seconds)
+                const responseLength = data.data.response.length;
+                const delay = Math.max(
+                  3000,
+                  Math.min(8000, responseLength * 10)
+                ); // Adjust multiplier as needed
+                console.log("DELAY", delay);
 
-                // Add bot response to chatbox
-                const botMessageDiv = document.createElement("div");
-                botMessageDiv.className = "message bot-message";
-                botMessageDiv.innerHTML = data.data.response; // Bot response in HTML format
-                chatbox.appendChild(botMessageDiv);
+                setTimeout(() => {
+                  // Hide typing indicator
+                  typingIndicator.style.display = "none";
 
-                // Add image generated div
-                const imageDiv = document.createElement("div");
-                imageDiv.className = "message bot-message";
-                const imageArray = tarotImageArrayGen(data.data.response);
-                for (let imageUrl of imageArray) {
-                  let imageElement = document.createElement("img");
-                  imageElement.src = imageUrl; // Bot response in HTML format
-                  imageElement.height = 128;
-                  imageElement.width = 128;
-                  imageDiv.appendChild(imageElement);
-                }
-                // if (imageArray.length > 0) {
-                //   let imageElement = document.createElement("img");
-                //   console.log("Has image", imageArray);
-                //   imageElement.src = imageArray[0]; // Bot response in HTML format
-                //   imageElement.height = 128;
-                //   imageDiv.appendChild(imageElement);
-                // }
-                chatbox.appendChild(imageDiv);
+                  // Add bot response to chatbox
+                  const botMessageDiv = document.createElement("div");
+                  botMessageDiv.className = "message bot-message";
+                  botMessageDiv.innerHTML = data.data.response; // Bot response in HTML format
+                  chatbox.appendChild(botMessageDiv);
 
-                chatbox.scrollTop = chatbox.scrollHeight; // Scroll to the bottom
+                  // Add image generated div
+                  const imageDiv = document.createElement("div");
+                  imageDiv.className = "message bot-message";
+                  const imageArray = tarotImageArrayGen(data.data.response);
+                  for (let imageUrl of imageArray) {
+                    let imageElement = document.createElement("img");
+                    imageElement.src = imageUrl; // Bot response in HTML format
+                    imageElement.height = 128;
+                    imageElement.width = 128;
+                    imageDiv.appendChild(imageElement);
+                  }
+                  chatbox.appendChild(imageDiv);
+
+                  chatbox.scrollTop = chatbox.scrollHeight; // Scroll to the bottom
+                }, delay);
               } catch (error) {
                 typingIndicator.style.display = "none";
                 console.error("Error sending message:", error);
@@ -499,7 +500,7 @@
                                 data-original="#ffcc53"
                               ></path>
                               <path
-                                d="M0 0c0-9.212-1.013-18.186-2.918-26.825 15.41 5.139 32.925 3.506 47.638-5.985l.013.292c23.013-14.845 53.588-9.641 75.043 7.313 4.654 3.677 1.312 11.083-4.547 10.166-23.958-3.753-48.81 7.331-61.504 29.66l-.001.001c-11.886 20.906-37.148 29.433-58.91 20.95A123.995 123.995 0 0 0 0 0"
+                                d="M0 0c0-9.212-1.013-18.186-2.918 26.825 15.41 5.139 32.925 3.506 47.638-5.985l.013.292c23.013-14.845 53.588-9.641 75.043 7.313 4.654 3.677 1.312 11.083-4.547 10.166-23.958-3.753-48.81 7.331-61.504 29.66l-.001.001c-11.886 20.906-37.148 29.433-58.91 20.95A123.995 123.995 0 0 0 0 0"
                                 style="
                                   fill-opacity: 1;
                                   fill-rule: nonzero;
